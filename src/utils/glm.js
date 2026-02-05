@@ -4,7 +4,7 @@ export function generateOutcome(choice) {
   const outcomes = [
     `You chose: ${choice}. Life unfolds in ways you couldn't predict. There are challenges, yes, but also unexpected joys.`,
     `Following the path of "${choice}" brings change. Some things improve, others get harder. That's how life works.`,
-    `With this choice, you've set yourself on a new journey. The destination isn't clear yet, but each step matters.`
+    `With this choice, you've set yourself on a new journey. The destination isn't clear yet, but each step matters. You chose: ${choice}.`
   ];
 
   return outcomes[Math.floor(Math.random() * outcomes.length)];
