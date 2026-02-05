@@ -6,6 +6,14 @@ Built with **React** and **Vite** for a modern, responsive experience.
 
 ## 🎮 Features
 
+### Cinematic Experience
+- **Epic Title Screen**: Animated title with sparkle particles and pulsing effects
+- **Confetti Celebration**: Explosive confetti animation (150 pieces) when completing scenarios
+- **Achievement Badge**: Visual notification with trophy icon when game is completed
+- **Screen Shake**: Dramatic shake effect on key moments
+- **Cinematic Transitions**: Smooth, movie-like scene transitions
+- **Interactive Audio**: Sound effects for all interactions (click, hover, success, choice, insight, save)
+
 ### Core Gameplay
 - **3 Pre-built Scenarios**: Career change, relationship decision, relocation
 - **Custom Scenario Creator**: Define your own life crossroads
@@ -26,19 +34,32 @@ Built with **React** and **Vite** for a modern, responsive experience.
 - **Load Game**: Restore any saved state from localStorage
 - **Persistent Storage**: Your progress persists between browser sessions
 
-### Audio
-- **Background Music**: Ambient drone generated with Web Audio API
+### Audio System
+
+#### Background Music (BGM)
+- **Ambient Drone**: Generated with Web Audio API (no external files)
 - **Volume Controls**: Adjust volume with slider (0-100%)
 - **Mute Toggle**: Easy on/off control with emoji indicator
 - **No External Assets**: All audio generated locally, no downloads needed
 - **Persistent Settings**: Volume and play state saved to localStorage
-- **Audio Attribution**: Generated using Web Audio API (no external licensing required)
+
+#### Sound Effects (SFX)
+- **Click Sound**: Feedback for button clicks
+- **Hover Sound**: Subtle feedback for hover interactions
+- **Success Sound**: Celebratory chord progression (C5-E5-G5)
+- **Choice Sound**: Feedback for making game choices
+- **Insight Sound**: Ascending chord for insights (E4-G4-B4-E5)
+- **Save Sound**: Confirmation tone for game saves
+
+#### Audio Attribution
+All audio (BGM and SFX) is generated in real-time using the **Web Audio API**. No external audio files, samples, or licensed music is used. All audio is created programmatically and requires no external licensing or attribution.
 
 #### Audio Technical Details
-- **Oscillator**: Sine wave at 65.41 Hz (C2 note)
-- **LFO Modulation**: 0.5 Hz modulation for subtle variation
-- **Gain Control**: Smooth volume transitions
+- **BGM Oscillator**: Sine wave at 65.41 Hz (C2 note)
+- **BGM LFO Modulation**: 0.5 Hz modulation for subtle variation
+- **SFX Waveforms**: Sine, triangle, and square waves
 - **Browser Support**: Works in all modern browsers with Web Audio API
+- **Performance**: Optimized audio nodes with proper cleanup
 
 ### Insight Summary
 - **End-of-game Analysis**: Receive personalized insights based on your choices

@@ -9,12 +9,17 @@ import { SaveModal } from './components/SaveModal';
 import { Toast } from './components/Toast';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import { AudioPlayer } from './components/AudioPlayer';
+import { TitleScreen } from './components/TitleScreen';
+import { Confetti } from './components/Confetti';
+import { SoundEffects } from './components/SoundEffects';
 
 function App() {
   const [customScenario, setCustomScenario] = useState(null);
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showTitle, setShowTitle] = useState(true);
+  const [triggerConfetti, setTriggerConfetti] = useState(0);
 
   const {
     currentScreen,
@@ -35,12 +40,29 @@ function App() {
     copyInsight
   } = useGameState();
 
+  const handleStartGame = () => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect('success');
+    }
+    setShowTitle(false);
+  };
+
   const handleSelectScenario = (scenarioId) => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect('choice');
+    }
     if (scenarioId === 'custom') {
       setShowCustomModal(true);
     } else {
       selectScenario(scenarioId);
     }
+  };
+
+  const handleMakeChoice = (choice) => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect('click');
+    }
+    makeChoice(choice);
   };
 
   const handleCreateCustomScenario = (scenario) => {
@@ -57,6 +79,9 @@ function App() {
   const handleSaveGame = (saveName) => {
     const success = saveGame(saveName);
     if (success) {
+      if (window.playSoundEffect) {
+        window.playSoundEffect('save');
+      }
       showToast('Game saved successfully!', 'success');
     } else {
       showToast('Failed to save game', 'error');
@@ -64,6 +89,9 @@ function App() {
   };
 
   const handleLoadGame = (saveId) => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect('success');
+    }
     const success = loadGame(saveId);
     if (success) {
       showToast('Game loaded successfully!', 'success');
@@ -82,6 +110,9 @@ function App() {
   const handleCopyInsight = () => {
     const success = copyInsight();
     if (success) {
+      if (window.playSoundEffect) {
+        window.playSoundEffect('success');
+      }
       showToast('Insight copied to clipboard!', 'success');
     } else {
       showToast('Failed to copy. Please select manually.', 'error');
@@ -96,70 +127,86 @@ function App() {
     setToast(null);
   };
 
+  // Trigger confetti when game completes
+  useState(() => {
+    if (isComplete && triggerConfetti === 0) {
+      setTriggerConfetti(triggerConfetti + 1);
+      if (window.playSoundEffect) {
+        window.playSoundEffect('insight');
+      }
+    }
+  });
+
   return (
     <>
+      <SoundEffects />
       <AnimatedBackground />
-
       <AudioPlayer />
 
-      <div className="container">
-        <header>
-          <h1>🌟 What-If Game</h1>
-          <p className="subtitle">Explore alternate paths. Discover yourself. Live in the present.</p>
-        </header>
+      {showTitle ? (
+        <TitleScreen onStart={handleStartGame} />
+      ) : (
+        <div className="container">
+          <header>
+            <h1>🌟 What-If Game</h1>
+            <p className="subtitle">Explore alternate paths. Discover yourself. Live in the present.</p>
+          </header>
 
-        {currentScreen === 'menu' && (
-          <MenuScreen
-            onSelectScenario={handleSelectScenario}
-            onShowLoadScreen={() => setCurrentScreen('load')}
+          {currentScreen === 'menu' && (
+            <MenuScreen
+              onSelectScenario={handleSelectScenario}
+              onShowLoadScreen={() => setCurrentScreen('load')}
+            />
+          )}
+
+          {currentScreen === 'game' && (
+            <GameScreen
+              currentScenario={currentScenario}
+              currentNode={currentNode}
+              pathHistory={pathHistory}
+              progress={progress}
+              insight={insight}
+              isComplete={isComplete}
+              onMakeChoice={handleMakeChoice}
+              onSave={handleSave}
+              onReturnToMenu={resetGame}
+              onCopyInsight={handleCopyInsight}
+              onStartNewGame={resetGame}
+            />
+          )}
+
+          {currentScreen === 'load' && (
+            <LoadScreen
+              savedGames={savedGames}
+              onLoadGame={handleLoadGame}
+              onDeleteGame={handleDeleteGame}
+              onReturnToMenu={() => setCurrentScreen('menu')}
           />
-        )}
+          )}
 
-        {currentScreen === 'game' && (
-          <GameScreen
-            currentScenario={currentScenario}
-            currentNode={currentNode}
-            pathHistory={pathHistory}
-            progress={progress}
-            insight={insight}
-            isComplete={isComplete}
-            onMakeChoice={makeChoice}
-            onSave={handleSave}
-            onReturnToMenu={resetGame}
-            onCopyInsight={handleCopyInsight}
-            onStartNewGame={resetGame}
+          <CustomScenarioModal
+            isOpen={showCustomModal}
+            onClose={() => setShowCustomModal(false)}
+            onCreateScenario={handleCreateCustomScenario}
           />
-        )}
 
-        {currentScreen === 'load' && (
-          <LoadScreen
-            savedGames={savedGames}
-            onLoadGame={handleLoadGame}
-            onDeleteGame={handleDeleteGame}
-            onReturnToMenu={() => setCurrentScreen('menu')}
+          <SaveModal
+            isOpen={showSaveModal}
+            onClose={() => setShowSaveModal(false)}
+            onSave={handleSaveGame}
           />
-        )}
 
-        <CustomScenarioModal
-          isOpen={showCustomModal}
-          onClose={() => setShowCustomModal(false)}
-          onCreateScenario={handleCreateCustomScenario}
-        />
+          {toast && (
+            <Toast
+              message={toast.message}
+              type={toast.type}
+              onClose={handleToastClose}
+            />
+          )}
+        </div>
+      )}
 
-        <SaveModal
-          isOpen={showSaveModal}
-          onClose={() => setShowSaveModal(false)}
-          onSave={handleSaveGame}
-        />
-
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={handleToastClose}
-          />
-        )}
-      </div>
+      {isComplete && <Confetti trigger={triggerConfetti} />}
     </>
   );
 }

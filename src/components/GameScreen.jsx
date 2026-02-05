@@ -20,6 +20,12 @@ export function GameScreen({
   const totalSteps = 3;
   const progressPercent = Math.min((progress / totalSteps) * 100, 100);
 
+  const handleMouseEnter = () => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect('hover');
+    }
+  };
+
   return (
     <div className="screen active">
       <div className={`game-area theme-${currentScenario}`}>
@@ -29,10 +35,18 @@ export function GameScreen({
             <p className="scenario-title">{scenario.description}</p>
           </div>
           <div className="actions">
-            <button className="btn btn-secondary" onClick={onSave}>
+            <button
+              className="btn btn-secondary"
+              onClick={onSave}
+              onMouseEnter={handleMouseEnter}
+            >
               💾 Save
             </button>
-            <button className="btn btn-warning" onClick={onReturnToMenu}>
+            <button
+              className="btn btn-warning"
+              onClick={onReturnToMenu}
+              onMouseEnter={handleMouseEnter}
+            >
               🏠 Menu
             </button>
           </div>
@@ -72,6 +86,7 @@ export function GameScreen({
                   key={index}
                   className="choice-btn"
                   onClick={() => onMakeChoice(choice)}
+                  onMouseEnter={handleMouseEnter}
                 >
                   <strong>{index + 1}.</strong> {choice.text}
                 </button>
@@ -112,13 +127,25 @@ export function GameScreen({
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <button className="btn btn-primary" onClick={onCopyInsight}>
+              <button
+                className="btn btn-primary"
+                onClick={onCopyInsight}
+                onMouseEnter={handleMouseEnter}
+              >
                 📋 Copy Summary
               </button>
-              <button className="btn btn-success" onClick={onStartNewGame}>
+              <button
+                className="btn btn-success"
+                onClick={onStartNewGame}
+                onMouseEnter={handleMouseEnter}
+              >
                 🔄 Play Again
               </button>
-              <button className="btn btn-secondary" onClick={onReturnToMenu}>
+              <button
+                className="btn btn-secondary"
+                onClick={onReturnToMenu}
+                onMouseEnter={handleMouseEnter}
+              >
                 🏠 Main Menu
               </button>
             </div>
