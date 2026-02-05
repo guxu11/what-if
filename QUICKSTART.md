@@ -38,7 +38,11 @@ npm run preview
 
 5. **Save Progress**: Use the Save button to save your game at any point.
 
-6. **Reflect**: The game encourages you to focus on the present moment rather than dwelling on "what if" scenarios.
+6. **Audio Controls**: Use the audio player in the top-right corner to:
+   - Toggle music on/off (🔊/🔇)
+   - Adjust volume with the slider
+
+7. **Reflect**: The game encourages you to focus on the present moment rather than dwelling on "what if" scenarios.
 
 ## Testing
 
@@ -82,6 +86,8 @@ what-if/
 - **Custom Scenario Creator**: Create your own what-if scenarios
 - **GLM Engine**: Built-in Guidance & Learning Model for generating insights
 - **Save/Load System**: Persistent game progress in localStorage
+- **Visual Polish**: Animated backgrounds, smooth transitions, and micro-interactions
+- **Audio Controls**: Background music with volume adjustment and mute toggle
 - **Responsive Design**: Works on desktop, tablet, and mobile
 
 ## Troubleshooting

@@ -7,6 +7,8 @@ import { LoadScreen } from './components/LoadScreen';
 import { CustomScenarioModal } from './components/CustomScenarioModal';
 import { SaveModal } from './components/SaveModal';
 import { Toast } from './components/Toast';
+import { AnimatedBackground } from './components/AnimatedBackground';
+import { AudioPlayer } from './components/AudioPlayer';
 
 function App() {
   const [customScenario, setCustomScenario] = useState(null);
@@ -95,64 +97,70 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <header>
-        <h1>🌟 What-If Game</h1>
-        <p className="subtitle">Explore alternate paths. Discover yourself. Live in the present.</p>
-      </header>
+    <>
+      <AnimatedBackground />
 
-      {currentScreen === 'menu' && (
-        <MenuScreen
-          onSelectScenario={handleSelectScenario}
-          onShowLoadScreen={() => setCurrentScreen('load')}
+      <AudioPlayer />
+
+      <div className="container">
+        <header>
+          <h1>🌟 What-If Game</h1>
+          <p className="subtitle">Explore alternate paths. Discover yourself. Live in the present.</p>
+        </header>
+
+        {currentScreen === 'menu' && (
+          <MenuScreen
+            onSelectScenario={handleSelectScenario}
+            onShowLoadScreen={() => setCurrentScreen('load')}
+          />
+        )}
+
+        {currentScreen === 'game' && (
+          <GameScreen
+            currentScenario={currentScenario}
+            currentNode={currentNode}
+            pathHistory={pathHistory}
+            progress={progress}
+            insight={insight}
+            isComplete={isComplete}
+            onMakeChoice={makeChoice}
+            onSave={handleSave}
+            onReturnToMenu={resetGame}
+            onCopyInsight={handleCopyInsight}
+            onStartNewGame={resetGame}
+          />
+        )}
+
+        {currentScreen === 'load' && (
+          <LoadScreen
+            savedGames={savedGames}
+            onLoadGame={handleLoadGame}
+            onDeleteGame={handleDeleteGame}
+            onReturnToMenu={() => setCurrentScreen('menu')}
+          />
+        )}
+
+        <CustomScenarioModal
+          isOpen={showCustomModal}
+          onClose={() => setShowCustomModal(false)}
+          onCreateScenario={handleCreateCustomScenario}
         />
-      )}
 
-      {currentScreen === 'game' && (
-        <GameScreen
-          currentScenario={currentScenario}
-          currentNode={currentNode}
-          pathHistory={pathHistory}
-          progress={progress}
-          insight={insight}
-          isComplete={isComplete}
-          onMakeChoice={makeChoice}
-          onSave={handleSave}
-          onReturnToMenu={resetGame}
-          onCopyInsight={handleCopyInsight}
-          onStartNewGame={resetGame}
+        <SaveModal
+          isOpen={showSaveModal}
+          onClose={() => setShowSaveModal(false)}
+          onSave={handleSaveGame}
         />
-      )}
 
-      {currentScreen === 'load' && (
-        <LoadScreen
-          savedGames={savedGames}
-          onLoadGame={handleLoadGame}
-          onDeleteGame={handleDeleteGame}
-          onReturnToMenu={() => setCurrentScreen('menu')}
-        />
-      )}
-
-      <CustomScenarioModal
-        isOpen={showCustomModal}
-        onClose={() => setShowCustomModal(false)}
-        onCreateScenario={handleCreateCustomScenario}
-      />
-
-      <SaveModal
-        isOpen={showSaveModal}
-        onClose={() => setShowSaveModal(false)}
-        onSave={handleSaveGame}
-      />
-
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={handleToastClose}
-        />
-      )}
-    </div>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={handleToastClose}
+          />
+        )}
+      </div>
+    </>
   );
 }
 
