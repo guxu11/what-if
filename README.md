@@ -295,6 +295,7 @@ npm run test:coverage
 ## 🛠️ Build & Deploy
 
 ### Development
+hi
 
 ```bash
 npm run dev
