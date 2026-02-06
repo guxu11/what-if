@@ -1,5 +1,349 @@
-// GLM (Guidance & Learning Model) - Generate outcomes and reflections for custom scenarios
+// GLM API Client - Frontend wrapper for backend API
+// All GLM calls go through the backend to keep the API key secure
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+/**
+ * Generate a story segment using GLM through the backend
+ * @param {Object} params - Story generation parameters
+ * @param {string} params.scenario - The scenario or prompt
+ * @param {string} [params.userChoice] - The user's previous choice
+ * @param {Array} [params.storyHistory] - Array of previous story events
+ * @param {string} [params.language] - Output language code
+ * @param {string} [params.sessionId] - Session ID for persistence
+ * @returns {Promise<Object>} Story data with text and choices
+ */
+export async function generateStory({
+  scenario,
+  userChoice = null,
+  storyHistory = [],
+  language = null,
+  sessionId = null
+}) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/story/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        scenario,
+        userChoice,
+        storyHistory,
+        language,
+        sessionId
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to generate story');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('GLM API error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Generate a story ending/reflection using GLM
+ * @param {Object} params - Ending generation parameters
+ * @param {Array} params.storyHistory - Array of story events
+ * @param {string} params.finalChoice - The final choice made
+ * @param {string} [params.language] - Output language code
+ * @param {string} [params.sessionId] - Session ID for persistence
+ * @returns {Promise<Object>} Ending data with text
+ */
+export async function generateEnding({
+  storyHistory,
+  finalChoice,
+  language = 'en',
+  sessionId = null
+}) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/story/ending`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        storyHistory,
+        finalChoice,
+        language,
+        sessionId
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to generate ending');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('GLM ending error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Stream story generation using Server-Sent Events
+ * @param {Object} params - Stream parameters
+ * @param {string} params.scenario - The scenario or prompt
+ * @param {string} [params.userChoice] - The user's previous choice
+ * @param {Array} [params.storyHistory] - Array of previous story events
+ * @param {string} [params.language] - Output language code
+ * @param {string} [params.sessionId] - Session ID for persistence
+ * @param {Function} onChunk - Callback for each chunk of text
+ * @param {Function} onDone - Callback when streaming is complete
+ * @param {Function} onError - Callback for errors
+ * @returns {Function} Abort function to stop streaming
+ */
+export function streamStory({
+  scenario,
+  userChoice = null,
+  storyHistory = [],
+  language = null,
+  sessionId = null,
+  onChunk,
+  onDone,
+  onError
+}) {
+  const controller = new AbortController();
+
+  fetch(`${API_BASE_URL}/story/stream`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      scenario,
+      userChoice,
+      storyHistory,
+      language,
+      sessionId
+    }),
+    signal: controller.signal
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error('Failed to start stream');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) {
+          if (onDone) onDone();
+          break;
+        }
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            try {
+              const parsed = JSON.parse(data);
+
+              if (parsed.error) {
+                if (onError) onError(new Error(parsed.error));
+                return;
+              }
+
+              if (parsed.done) {
+                if (onDone) onDone();
+                return;
+              }
+
+              if (parsed.chunk && onChunk) {
+                onChunk(parsed.chunk);
+              }
+            } catch (e) {
+              console.warn('Failed to parse SSE data:', data);
+            }
+          }
+        }
+      }
+    })
+    .catch((error) => {
+      if (error.name !== 'AbortError' && onError) {
+        onError(error);
+      }
+    });
+
+  // Return abort function
+  return () => controller.abort();
+}
+
+/**
+ * Detect language from text using the backend
+ * @param {string} text - Text to analyze
+ * @returns {Promise<string>} Language code (e.g., 'en', 'zh', 'es')
+ */
+export async function detectLanguage(text) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/story/detect-language`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to detect language');
+    }
+
+    const data = await response.json();
+    return data.data.language;
+  } catch (error) {
+    console.error('Language detection error:', error);
+    // Fallback to 'en' on error
+    return 'en';
+  }
+}
+
+/**
+ * Session management functions
+ */
+export async function createSession(scenario, language, metadata = {}) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        scenario,
+        language,
+        metadata
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to create session');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Session creation error:', error);
+    throw error;
+  }
+}
+
+export async function getSession(sessionId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to get session');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Session retrieval error:', error);
+    throw error;
+  }
+}
+
+export async function updateSession(sessionId, updates) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update session');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Session update error:', error);
+    throw error;
+  }
+}
+
+export async function deleteSession(sessionId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete session');
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Session deletion error:', error);
+    throw error;
+  }
+}
+
+export async function exportSession(sessionId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/export`, {
+      method: 'POST'
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to export session');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Session export error:', error);
+    throw error;
+  }
+}
+
+export async function importSession(exportData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/sessions/import`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(exportData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to import session');
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Session import error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Legacy functions for backward compatibility
+ * These use static responses for scenarios that don't use GLM
+ */
 export function generateOutcome(choice) {
   const outcomes = [
     `You chose: ${choice}. Life unfolds in ways you couldn't predict. There are challenges, yes, but also unexpected joys.`,

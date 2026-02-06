@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "./i18n/useTranslation";
 import { useGameState } from "./hooks/useGameState";
+import { useGLMStory } from "./hooks/useGLMStory";
 import { getScenario } from "./data/scenarios";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { MenuScreen } from "./components/MenuScreen";
 import { GameScreen } from "./components/GameScreen";
 import { LoadScreen } from "./components/LoadScreen";
+import { GLMStoryScreen } from "./components/GLMStoryScreen";
 import { CustomScenarioModal } from "./components/CustomScenarioModal";
 import { SaveModal } from "./components/SaveModal";
 import { Toast } from "./components/Toast";
@@ -24,6 +26,7 @@ function App() {
   const [showTitle, setShowTitle] = useState(true);
   const [triggerConfetti, setTriggerConfetti] = useState(0);
   const [epicMode, setEpicMode] = useState(false);
+  const [showGLMStory, setShowGLMStory] = useState(false);
 
   const {
     currentScreen,
@@ -43,6 +46,8 @@ function App() {
     deleteGame,
     copyInsight,
   } = useGameState();
+
+  const glmStory = useGLMStory();
 
   // Auto-detect language from user input
   useEffect(() => {
@@ -153,6 +158,47 @@ function App() {
     setEpicMode(!epicMode);
   };
 
+  const handleStartGLMStory = () => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect("choice");
+    }
+    setShowGLMStory(true);
+    setCurrentScreen("glm-story");
+  };
+
+  const handleGLMMakeChoice = async (choiceText) => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect("click");
+    }
+    try {
+      await glmStory.makeChoice(choiceText);
+    } catch (error) {
+      showToast("Failed to process choice: " + error.message, "error");
+    }
+  };
+
+  const handleGLMGenerateEnding = async (finalChoice) => {
+    if (window.playSoundEffect) {
+      window.playSoundEffect("insight");
+    }
+    try {
+      await glmStory.generateStoryEnding(finalChoice);
+      setTriggerConfetti(triggerConfetti + 1);
+    } catch (error) {
+      showToast("Failed to generate ending: " + error.message, "error");
+    }
+  };
+
+  const handleGLMReset = () => {
+    glmStory.resetStory();
+    setShowGLMStory(false);
+    setCurrentScreen("menu");
+  };
+
+  const handleGLMReturnToMenu = () => {
+    setCurrentScreen("menu");
+  };
+
   return (
     <>
       <SoundEffects />
@@ -186,7 +232,27 @@ function App() {
             <MenuScreen
               onSelectScenario={handleSelectScenario}
               onShowLoadScreen={() => setCurrentScreen("load")}
+              onStartGLMStory={handleStartGLMStory}
               epicMode={epicMode}
+            />
+          )}
+
+          {currentScreen === "glm-story" && (
+            <GLMStoryScreen
+              onStartStory={glmStory.startStory}
+              currentStory={glmStory.currentStory}
+              choices={glmStory.choices}
+              storyHistory={glmStory.storyHistory}
+              isComplete={glmStory.isComplete}
+              insight={glmStory.insight}
+              isLoading={glmStory.isLoading}
+              error={glmStory.error}
+              language={glmStory.language}
+              onMakeChoice={handleGLMMakeChoice}
+              onGenerateEnding={handleGLMGenerateEnding}
+              onReset={handleGLMReset}
+              onReturnToMenu={handleGLMReturnToMenu}
+              onSetLanguage={glmStory.setLanguage}
             />
           )}
 

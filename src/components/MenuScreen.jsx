@@ -2,7 +2,7 @@ import { useTranslation } from "../i18n/useTranslation";
 import { getAllScenarios } from "../data/scenarios";
 import { createDemonstrationScenario } from "../data/epicScenarios";
 
-export function MenuScreen({ onSelectScenario, onShowLoadScreen, epicMode = false }) {
+export function MenuScreen({ onSelectScenario, onShowLoadScreen, onStartGLMStory, epicMode = false }) {
   const { t } = useTranslation();
   const scenarios = getAllScenarios();
 
@@ -17,6 +17,12 @@ export function MenuScreen({ onSelectScenario, onShowLoadScreen, epicMode = fals
     // For now, we'll just trigger a custom scenario with the epic data
     // In a full implementation, this would integrate with the narrative engine
     onSelectScenario("epic");
+  };
+
+  const handleStartGLMStory = () => {
+    if (onStartGLMStory) {
+      onStartGLMStory();
+    }
   };
 
   return (
@@ -35,6 +41,21 @@ export function MenuScreen({ onSelectScenario, onShowLoadScreen, epicMode = fals
         )}
 
         <div className="scenario-grid">
+          {/* GLM AI-Powered Story - Always shown */}
+          <div
+            className="scenario-card glm-card"
+            onClick={handleStartGLMStory}
+            onMouseEnter={handleMouseEnter}
+          >
+            <div className="icon">🤖</div>
+            <h3>AI-Powered Story</h3>
+            <p>
+              Create an infinite, epic story powered by AI. Enter any scenario in any language, 
+              and experience a unique, soul-stirring narrative generated just for you.
+            </p>
+            <span className="tag glm-tag">AI • Infinite • Multi-Language</span>
+          </div>
+
           {epicMode && (
             <div
               className="scenario-card epic-card"
@@ -72,7 +93,7 @@ export function MenuScreen({ onSelectScenario, onShowLoadScreen, epicMode = fals
           >
             <div className="icon">🎨</div>
             <h3>{t("scenario.custom")}</h3>
-            <p>Define your own crossroads and explore the possibilities</p>
+            <p>Define your own crossroads and explore possibilities</p>
             <span className="tag">{t("custom.title")}</span>
           </div>
         </div>
