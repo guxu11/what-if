@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function TitleScreen({ onStart }) {
   const [showButton, setShowButton] = useState(false);
@@ -13,7 +13,7 @@ export function TitleScreen({ onStart }) {
         x: Math.random() * 100,
         y: Math.random() * 100,
         size: Math.random() * 4 + 2,
-        delay: Math.random() * 2
+        delay: Math.random() * 2,
       });
     }
     setParticles(newParticles);
@@ -34,7 +34,7 @@ export function TitleScreen({ onStart }) {
               top: `${p.y}%`,
               width: `${p.size}px`,
               height: `${p.size}px`,
-              animationDelay: `${p.delay}s`
+              animationDelay: `${p.delay}s`,
             }}
           />
         ))}

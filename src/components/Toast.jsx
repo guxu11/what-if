@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export function Toast({ message, type = 'info', onClose }) {
+export function Toast({ message, type = "info", onClose }) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -12,9 +12,5 @@ export function Toast({ message, type = 'info', onClose }) {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  return (
-    <div className={`toast ${type} ${isVisible ? 'visible' : 'hidden'}`}>
-      {message}
-    </div>
-  );
+  return <div className={`toast ${type} ${isVisible ? "visible" : "hidden"}`}>{message}</div>;
 }

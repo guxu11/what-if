@@ -1,32 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function SaveModal({ isOpen, onClose, onSave }) {
-  const [saveName, setSaveName] = useState('');
+  const [saveName, setSaveName] = useState("");
 
   useEffect(() => {
     if (isOpen) {
-      setSaveName('');
+      setSaveName("");
       // Focus input when modal opens
       setTimeout(() => {
-        const input = document.getElementById('save-name');
+        const input = document.getElementById("save-name");
         if (input) input.focus();
       }, 100);
     }
   }, [isOpen]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (saveName.trim()) {
       onSave(saveName);
       onClose();
-      setSaveName('');
+      setSaveName("");
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal active" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal active" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal-content">
         <div className="modal-header">
           <h2>💾 Save Game</h2>
@@ -41,12 +41,12 @@ export function SaveModal({ isOpen, onClose, onSave }) {
               type="text"
               id="save-name"
               value={saveName}
-              onChange={(e) => setSaveName(e.target.value)}
+              onChange={e => setSaveName(e.target.value)}
               placeholder="e.g., Career Path Exploration"
               required
             />
           </div>
-          <button type="submit" className="btn btn-success" style={{ width: '100%' }}>
+          <button type="submit" className="btn btn-success" style={{ width: "100%" }}>
             💾 Save Game
           </button>
         </form>

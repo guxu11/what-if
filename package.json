@@ -1,7 +1,7 @@
 {
   "name": "what-if",
-  "version": "1.0.0",
-  "description": "A thought-provoking game that simulates alternate outcomes at life crossroads",
+  "version": "2.0.0",
+  "description": "An epic multi-language interactive story game with branching narratives and consequences",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,9 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,jsx,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css,json}\""
   },
   "keywords": [
     "game",
@@ -19,7 +21,9 @@
     "life-simulation",
     "what-if",
     "react",
-    "vite"
+    "vite",
+    "multi-language",
+    "epic-story"
   ],
   "author": "",
   "license": "MIT",
@@ -43,6 +47,7 @@
     "globals": "^16.5.0",
     "jsdom": "^26.0.0",
     "mermaid": "^11.6.0",
+    "prettier": "^3.8.1",
     "vite": "^7.2.4",
     "vitest": "^2.1.8"
   }

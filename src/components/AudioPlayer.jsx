@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 export function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,21 +9,21 @@ export function AudioPlayer() {
 
   useEffect(() => {
     // Load preferences from localStorage
-    const savedVolume = localStorage.getItem('whatif-audio-volume');
-    const savedPlaying = localStorage.getItem('whatif-audio-playing');
+    const savedVolume = localStorage.getItem("whatif-audio-volume");
+    const savedPlaying = localStorage.getItem("whatif-audio-playing");
 
     if (savedVolume !== null) {
       setVolume(parseFloat(savedVolume));
     }
-    if (savedPlaying === 'true') {
+    if (savedPlaying === "true") {
       setIsPlaying(true);
     }
   }, []);
 
   useEffect(() => {
     // Save preferences
-    localStorage.setItem('whatif-audio-volume', volume.toString());
-    localStorage.setItem('whatif-audio-playing', isPlaying.toString());
+    localStorage.setItem("whatif-audio-volume", volume.toString());
+    localStorage.setItem("whatif-audio-playing", isPlaying.toString());
 
     // Update volume
     if (gainNodeRef.current) {
@@ -43,12 +43,12 @@ export function AudioPlayer() {
 
     // Create oscillator for ambient drone
     oscillatorRef.current = audioContextRef.current.createOscillator();
-    oscillatorRef.current.type = 'sine';
+    oscillatorRef.current.type = "sine";
     oscillatorRef.current.frequency.setValueAtTime(65.41, audioContextRef.current.currentTime); // C2 note
 
     // Create LFO for subtle modulation
     const lfo = audioContextRef.current.createOscillator();
-    lfo.type = 'sine';
+    lfo.type = "sine";
     lfo.frequency.setValueAtTime(0.5, audioContextRef.current.currentTime);
 
     const lfoGain = audioContextRef.current.createGain();
@@ -86,19 +86,15 @@ export function AudioPlayer() {
     }
   };
 
-  const handleVolumeChange = (e) => {
+  const handleVolumeChange = e => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
   };
 
   return (
     <div className="audio-player">
-      <button
-        className="audio-btn"
-        onClick={togglePlay}
-        title={isPlaying ? 'Mute' : 'Play Music'}
-      >
-        {isPlaying ? '🔇' : '🔊'}
+      <button className="audio-btn" onClick={togglePlay} title={isPlaying ? "Mute" : "Play Music"}>
+        {isPlaying ? "🔇" : "🔊"}
       </button>
       <input
         type="range"

@@ -1,4 +1,5 @@
-import { getScenario } from '../data/scenarios';
+import { useTranslation } from "../i18n/useTranslation";
+import { getScenario } from "../data/scenarios";
 
 export function GameScreen({
   currentScenario,
@@ -11,8 +12,9 @@ export function GameScreen({
   onSave,
   onReturnToMenu,
   onCopyInsight,
-  onStartNewGame
+  onStartNewGame,
 }) {
+  const { t } = useTranslation();
   const scenario = getScenario(currentScenario);
 
   if (!scenario) return null;
@@ -22,7 +24,7 @@ export function GameScreen({
 
   const handleMouseEnter = () => {
     if (window.playSoundEffect) {
-      window.playSoundEffect('hover');
+      window.playSoundEffect("hover");
     }
   };
 
@@ -35,36 +37,32 @@ export function GameScreen({
             <p className="scenario-title">{scenario.description}</p>
           </div>
           <div className="actions">
-            <button
-              className="btn btn-secondary"
-              onClick={onSave}
-              onMouseEnter={handleMouseEnter}
-            >
-              💾 Save
+            <button className="btn btn-secondary" onClick={onSave} onMouseEnter={handleMouseEnter}>
+              💾 {t("game.save")}
             </button>
             <button
               className="btn btn-warning"
               onClick={onReturnToMenu}
               onMouseEnter={handleMouseEnter}
             >
-              🏠 Menu
+              🏠 {t("game.return")}
             </button>
           </div>
         </div>
 
         <div className="progress">
-          <div
-            className="progress-bar"
-            style={{ width: `${progressPercent}%` }}
-          ></div>
+          <div className="progress-bar" style={{ width: `${progressPercent}%` }}></div>
         </div>
 
         {pathHistory.length > 0 && (
           <div className="path-history">
-            <h3>Your Path So Far</h3>
+            <h3>{t("game.history")}</h3>
             {pathHistory.map((item, index) => (
               <div key={index} className="path-item">
-                <strong>Step {index + 1}:</strong> {item.choice}
+                <strong>
+                  {t("story.chapter")} {index + 1}:
+                </strong>{" "}
+                {item.choice}
               </div>
             ))}
           </div>
@@ -74,7 +72,7 @@ export function GameScreen({
           <>
             <div id="narrative-container">
               <div className="narrative">
-                {currentNode?.text?.split('\n').map((line, index) => (
+                {currentNode?.text?.split("\n").map((line, index) => (
                   <p key={index}>{line}</p>
                 ))}
               </div>
@@ -96,57 +94,59 @@ export function GameScreen({
         ) : (
           <div className="insight-container">
             <div className="insight-summary">
-              <h3>💡 Your Insight Summary</h3>
+              <h3>💡 {t("game.insight")}</h3>
               <div className="insight-content">
                 <p>
-                  <strong>Your Journey:</strong>
+                  <strong>{t("game.history")}:</strong>
                 </p>
                 {pathHistory.map((item, index) => (
                   <p key={index}>
                     {index + 1}. {item.choice}
                   </p>
                 ))}
-                <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #ddd' }} />
+                <hr style={{ margin: "20px 0", border: "none", borderTop: "1px solid #ddd" }} />
                 <p>
-                  <strong>💡 Your Insight:</strong>
+                  <strong>💡 {t("game.insight")}:</strong>
                 </p>
-                <p>{insight?.split('\n').map((line, index) => (
-                  <span key={index}>
-                    {line}
-                    <br />
-                  </span>
-                ))}</p>
-                <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #ddd' }} />
+                <p>
+                  {insight?.split("\n").map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+                </p>
+                <hr style={{ margin: "20px 0", border: "none", borderTop: "1px solid #ddd" }} />
                 <p>
                   <em>
-                    Remember: The paths we imagine are just that - imagination. What matters
-                    most is not the road not taken, but how fully we walk the one we're on.
-                    Live in the present. No regrets. ✨
+                    Remember: The paths we imagine are just that - imagination. What matters most is
+                    not road not taken, but how fully we walk the one we're on. Live in the present.
+                    No regrets. ✨
                   </em>
                 </p>
               </div>
             </div>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: "center" }}>
               <button
                 className="btn btn-primary"
                 onClick={onCopyInsight}
                 onMouseEnter={handleMouseEnter}
               >
-                📋 Copy Summary
+                📋 {t("game.copy")}
               </button>
               <button
                 className="btn btn-success"
                 onClick={onStartNewGame}
                 onMouseEnter={handleMouseEnter}
               >
-                🔄 Play Again
+                🔄 {t("game.new")}
               </button>
               <button
                 className="btn btn-secondary"
                 onClick={onReturnToMenu}
                 onMouseEnter={handleMouseEnter}
               >
-                🏠 Main Menu
+                🏠 {t("game.return")}
               </button>
             </div>
           </div>

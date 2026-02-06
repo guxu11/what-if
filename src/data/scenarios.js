@@ -13,7 +13,7 @@ export const scenarios = {
       text: "It's Monday morning. You walk into your office and find two envelopes on your desk:\n\n📩 Envelope 1: A promotion offer to Senior Manager - 40% raise, stability, benefits, but more responsibility and stress.\n\n📩 Envelope 2: An offer from a promising startup - equity potential, exciting work, but risky and lower salary.\n\nYour current job is comfortable but you've felt stagnant lately. Your family depends on your income.",
       choices: [
         {
-          text: 'Take the promotion - Security matters most',
+          text: 'Take promotion - Security matters most',
           outcome: 'promotion_stable',
           next: {
             text: 'You accept the promotion. The raise helps your family immediately. The first few months are stressful as you adjust to new responsibilities.\n\nThree years pass. You\'re respected, financially secure, but sometimes wonder if you missed an adventure.',
@@ -32,7 +32,7 @@ export const scenarios = {
           }
         },
         {
-          text: 'Join the startup - Adventure calls',
+          text: 'Join startup - Adventure calls',
           outcome: 'startup_risk',
           next: {
             text: 'You take the leap! The startup is exciting and challenging. Your family worries about the risk.\n\nTwo years in: The company struggles. You work long hours for uncertain reward. But you\'ve learned so much and made incredible connections.',
@@ -207,6 +207,58 @@ export const scenarios = {
                 text: 'The visit reveals - Stay where you are',
                 outcome: 'visit_confirm_stay',
                 reflection: 'Experiencing the new place stripped away the romanticized version. You realized what you\'d miss. The visit gave you closure on the "what if" without upending your life. Sometimes the best decision is the one that feels like relief, not excitement.'
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+
+  // Epic: The King's Destiny
+  epic: {
+    id: 'epic',
+    title: "The King's Destiny",
+    description: "A medieval epic of political intrigue, rebellion, and destiny. Multiple chapters with deep consequences.",
+    icon: '🏰',
+    color: '#9b59b6',
+    start: {
+      text: "You are a simple farmer living in the village of Eldermere. One morning, your grandfather calls you to his deathbed.\n\n'I have something to tell you,' he says, his voice barely above a whisper. 'Something I've kept secret your entire life.'\n\nHe hands you an old letter, sealed with wax bearing a royal crest.\n\n'You are not who you think you are,' he continues. 'Your parents... they were royalty. They hid you away to protect you from those who would do you harm.'\n\n'I don't understand,' you say, confused.\n\n'The King is dying,' your grandfather says. 'He has no heir. But you... you are the rightful heir to the throne. This letter proves it.'\n\nHe squeezes your hand weakly. 'The choice is yours, child. Claim your birthright, or stay here and live the simple life you've always known.'",
+      choices: [
+        {
+          text: 'Accept my destiny',
+          outcome: 'accepted_destiny',
+          next: {
+            text: "You take the letter and kiss your grandfather's forehead. 'I'll make you proud,' you promise.\n\nYour grandfather smiles weakly. 'I know you will. But remember - power corrupts even the best of hearts. Stay true to yourself, no matter what the crown demands.'\n\nThat night, your grandfather passes away peacefully. The next morning, you gather your few belongings and begin the journey to the capital. You're afraid, but also filled with a strange sense of purpose.\n\nAs you leave the village, you can't help but look back one last time at the only home you've ever known. Your old life is ending - and your true life is just beginning.",
+            choices: [
+              {
+                text: 'Travel to the capital quickly',
+                outcome: 'quick_journey',
+                reflection: 'The journey to the capital takes two weeks. When you finally reach it, the city is more impressive than you imagined. The castle looms above everything. When you show the letter to the guard, he immediately escorts you to the throne room.\n\nThe King confirms your identity and prepares for your coronation. You sit on the throne the next day, terrified but determined. You rule for thirty years, bringing prosperity to the kingdom. You never forgot your grandfather\'s warning about power, and you always stayed connected to the people.\n\nThe simple farmer\'s child became a great king - not because of royal blood, but because of a good heart.'
+              },
+              {
+                text: 'Visit the nearest town for information first',
+                outcome: 'cautious_journey',
+                reflection: 'You spend a day in the nearest town, learning about the political situation. The King is beloved but dying, and factions are already forming. Armed with knowledge, you travel to the capital.\n\nYour strategic thinking impresses the court. The King appoints advisors to guide you, and you spend months learning statecraft before your coronation. Your reign is marked by wise decisions and political stability.\n\nThe simple farmer\'s child became a wise ruler - proving that preparation and knowledge are as important as noble blood.'
+              }
+            ]
+          }
+        },
+        {
+          text: 'This is too much - I need time to think',
+          outcome: 'hesitated',
+          next: {
+            text: "You set the letter down, your mind racing. 'I can't just leave,' you say. 'I don't know anything about ruling, about politics, about any of this. I'm a farmer, grandfather. That's all I've ever been.'\n\n'Being a farmer doesn't make you incapable of greatness,' your grandfather says gently. 'Your parents believed that true leadership comes from the heart, not from noble blood. They chose to hide you because they wanted you to grow up knowing real life - knowing the struggles of the common people.'\n\nHe coughs weakly. 'Take a few days to think about it. The letter will wait. But know this - the kingdom is in danger, and you may be the only one who can save it.'\n\nYou spend the next three days in a daze, going through the motions of farm work while your mind races with impossible choices. Finally, you make your decision.",
+            choices: [
+              {
+                text: 'I must go - the kingdom needs me',
+                outcome: 'eventual_acceptance',
+                reflection: 'You return to your grandfather and tell him your decision. He smiles, tears in his eyes, and gives you final advice: "Listen to the people. Trust your heart. Never forget where you came from."\n\nThe journey changes you. You see the kingdom through new eyes - the poverty, the corruption, but also the hope. When you finally become king, you rule with deep empathy for your subjects. Your reign transforms the kingdom for the better.\n\nThe farmer who became king understood the people because he was one of them.'
+              },
+              {
+                text: 'I can\'t do this - I\'ll stay',
+                outcome: 'declined',
+                reflection: 'You decide to stay in Eldermere. The castle, the throne, the responsibility - it\'s all too much. You\'re a farmer, not a king, and no letter can change who you are.\n\nYou burn the letter and continue your life as before. But sometimes, late at night, you wonder: what if you had been brave enough to accept your destiny? What if you could have made a difference?\n\nYou\'ll never know. But perhaps that\'s okay. Not everyone is destined for greatness, and there\'s dignity in an ordinary life lived well.\n\nTHE END - SIMPLE LIFE'
               }
             ]
           }

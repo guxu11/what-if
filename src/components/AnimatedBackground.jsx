@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export function AnimatedBackground() {
   const canvasRef = useRef(null);
@@ -9,7 +9,7 @@ export function AnimatedBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     let width, height;
 
     // Resize handler
@@ -19,7 +19,7 @@ export function AnimatedBackground() {
     };
 
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
     // Particle class
     class Particle {
@@ -64,9 +64,9 @@ export function AnimatedBackground() {
 
       // Draw gradient background
       const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, '#667eea');
-      gradient.addColorStop(0.5, '#764ba2');
-      gradient.addColorStop(1, '#667eea');
+      gradient.addColorStop(0, "#667eea");
+      gradient.addColorStop(0.5, "#764ba2");
+      gradient.addColorStop(1, "#667eea");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
@@ -82,7 +82,7 @@ export function AnimatedBackground() {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener("resize", resize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -94,13 +94,13 @@ export function AnimatedBackground() {
       ref={canvasRef}
       className="animated-background"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         zIndex: -1,
-        pointerEvents: 'none'
+        pointerEvents: "none",
       }}
     />
   );

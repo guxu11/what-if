@@ -1,16 +1,16 @@
-import { useState, useCallback, useEffect } from 'react';
-import { getScenario } from '../data/scenarios';
+import { useState, useCallback, useEffect } from "react";
+import { getScenario } from "../data/scenarios";
 
-const SAVE_KEY = 'whatif-saved-games';
-const AUTOSAVE_KEY = 'whatif-autosave';
+const SAVE_KEY = "whatif-saved-games";
+const AUTOSAVE_KEY = "whatif-autosave";
 
 export function useGameState() {
-  const [currentScreen, setCurrentScreen] = useState('menu');
+  const [currentScreen, setCurrentScreen] = useState("menu");
   const [currentScenario, setCurrentScenario] = useState(null);
   const [currentNode, setCurrentNode] = useState(null);
   const [pathHistory, setPathHistory] = useState([]);
   const [progress, setProgress] = useState(0);
-  const [insight, setInsight] = useState('');
+  const [insight, setInsight] = useState("");
   const [isComplete, setIsComplete] = useState(false);
   const [savedGames, setSavedGames] = useState([]);
 
@@ -21,7 +21,7 @@ export function useGameState() {
       try {
         setSavedGames(JSON.parse(saved));
       } catch (e) {
-        console.error('Error loading saved games:', e);
+        console.error("Error loading saved games:", e);
       }
     }
   }, []);
@@ -34,13 +34,13 @@ export function useGameState() {
         currentNode,
         pathHistory,
         progress,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
       localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(autoSaveData));
     }
   }, [currentScenario, currentNode, pathHistory, progress]);
 
-  const selectScenario = useCallback((scenarioId) => {
+  const selectScenario = useCallback(scenarioId => {
     const scenario = getScenario(scenarioId);
     if (!scenario) return;
 
@@ -48,19 +48,19 @@ export function useGameState() {
     setCurrentNode(scenario.start);
     setPathHistory([]);
     setProgress(0);
-    setInsight('');
+    setInsight("");
     setIsComplete(false);
-    setCurrentScreen('game');
+    setCurrentScreen("game");
   }, []);
 
-  const makeChoice = useCallback((choice) => {
+  const makeChoice = useCallback(choice => {
     setPathHistory(prev => [
       ...prev,
       {
         choice: choice.text,
         outcome: choice.outcome,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     ]);
 
     if (choice.next) {
@@ -77,53 +77,62 @@ export function useGameState() {
     setCurrentNode(null);
     setPathHistory([]);
     setProgress(0);
-    setInsight('');
+    setInsight("");
     setIsComplete(false);
-    setCurrentScreen('menu');
+    setCurrentScreen("menu");
   }, []);
 
-  const saveGame = useCallback((saveName) => {
-    const scenario = getScenario(currentScenario);
-    const saveData = {
-      id: Date.now().toString(),
-      name: saveName,
-      scenario: currentScenario,
-      scenarioData: scenario,
-      currentNode,
-      pathHistory,
-      progress,
-      insight,
-      isComplete,
-      date: new Date().toISOString()
-    };
+  const saveGame = useCallback(
+    saveName => {
+      const scenario = getScenario(currentScenario);
+      const saveData = {
+        id: Date.now().toString(),
+        name: saveName,
+        scenario: currentScenario,
+        scenarioData: scenario,
+        currentNode,
+        pathHistory,
+        progress,
+        insight,
+        isComplete,
+        date: new Date().toISOString(),
+      };
 
-    const updatedSavedGames = [...savedGames, saveData];
-    setSavedGames(updatedSavedGames);
-    localStorage.setItem(SAVE_KEY, JSON.stringify(updatedSavedGames));
+      const updatedSavedGames = [...savedGames, saveData];
+      setSavedGames(updatedSavedGames);
+      localStorage.setItem(SAVE_KEY, JSON.stringify(updatedSavedGames));
 
-    return true;
-  }, [currentScenario, currentNode, pathHistory, progress, insight, isComplete, savedGames]);
+      return true;
+    },
+    [currentScenario, currentNode, pathHistory, progress, insight, isComplete, savedGames]
+  );
 
-  const loadGame = useCallback((saveId) => {
-    const saved = savedGames.find(s => s.id === saveId);
-    if (!saved) return false;
+  const loadGame = useCallback(
+    saveId => {
+      const saved = savedGames.find(s => s.id === saveId);
+      if (!saved) return false;
 
-    setCurrentScenario(saved.scenario);
-    setCurrentNode(saved.currentNode);
-    setPathHistory(saved.pathHistory);
-    setProgress(saved.progress);
-    setInsight(saved.insight);
-    setIsComplete(saved.isComplete);
-    setCurrentScreen('game');
+      setCurrentScenario(saved.scenario);
+      setCurrentNode(saved.currentNode);
+      setPathHistory(saved.pathHistory);
+      setProgress(saved.progress);
+      setInsight(saved.insight);
+      setIsComplete(saved.isComplete);
+      setCurrentScreen("game");
 
-    return true;
-  }, [savedGames]);
+      return true;
+    },
+    [savedGames]
+  );
 
-  const deleteGame = useCallback((saveId) => {
-    const updatedSavedGames = savedGames.filter(s => s.id !== saveId);
-    setSavedGames(updatedSavedGames);
-    localStorage.setItem(SAVE_KEY, JSON.stringify(updatedSavedGames));
-  }, [savedGames]);
+  const deleteGame = useCallback(
+    saveId => {
+      const updatedSavedGames = savedGames.filter(s => s.id !== saveId);
+      setSavedGames(updatedSavedGames);
+      localStorage.setItem(SAVE_KEY, JSON.stringify(updatedSavedGames));
+    },
+    [savedGames]
+  );
 
   const copyInsight = useCallback(() => {
     const scenario = getScenario(currentScenario);
@@ -131,10 +140,10 @@ export function useGameState() {
 WHAT-IF GAME INSIGHT SUMMARY
 ============================
 
-Scenario: ${scenario?.title || 'Unknown'}
+Scenario: ${scenario?.title || "Unknown"}
 
 Your Path:
-${pathHistory.map((item, i) => `${i + 1}. ${item.choice}`).join('\n')}
+${pathHistory.map((item, i) => `${i + 1}. ${item.choice}`).join("\n")}
 
 Your Insight:
 ${insight}
@@ -144,11 +153,14 @@ Generated by What-If Game
 Focus on the present. Live without regrets.
     `.trim();
 
-    navigator.clipboard.writeText(insightText).then(() => {
-      return true;
-    }).catch(() => {
-      return false;
-    });
+    navigator.clipboard
+      .writeText(insightText)
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
   }, [currentScenario, pathHistory, insight]);
 
   return {
@@ -167,6 +179,6 @@ Focus on the present. Live without regrets.
     saveGame,
     loadGame,
     deleteGame,
-    copyInsight
+    copyInsight,
   };
 }

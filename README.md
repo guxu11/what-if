@@ -1,10 +1,33 @@
-# What-If Game 🌟
+# What-If Game v2 🌟⚔️
 
-A thought-provoking interactive game that simulates alternate outcomes at life crossroads, helping you explore "what if" scenarios while ultimately landing on the message: focus on the present, live without regrets.
+An epic multi-language interactive story game with branching narratives, consequences, and deep state tracking. Built with **React** and **Vite** for a modern, responsive experience.
 
-Built with **React** and **Vite** for a modern, responsive experience.
+## 🎮 New Features in v2.0
 
-## 🎮 Features
+### 🌍 Multi-Language Support
+- **7 Languages**: English, Spanish, French, German, Chinese, Japanese, Portuguese
+- **Auto-Detection**: Automatically detects user input language
+- **UI Translations**: Complete UI translation in all supported languages
+- **Language Selector**: Easy-to-use dropdown in the header
+- **Seamless Switching**: Change language at any time without losing progress
+
+### ⚔️ Epic Mode
+- **Deep Branching**: 8+ levels of story branching with meaningful consequences
+- **State Tracking**: Track characters, factions, resources, quests, and flags
+- **Narrative Engine**: Sophisticated story progression system
+- **Skill Checks**: Optional dice rolls for skill-based decisions
+- **Multiple Endings**: Several unique endings based on choices
+
+### 🏰 Epic Scenario: "The King's Destiny"
+A medieval political intrigue story featuring:
+- Multiple chapters with deep branching
+- Character relationships and reputation tracking
+- Faction politics and alliances
+- Quest progression system
+- Timeline and consequence tracking
+- Multiple unique endings
+
+## 🎨 Features
 
 ### Cinematic Experience
 - **Epic Title Screen**: Animated title with sparkle particles and pulsing effects
@@ -15,7 +38,7 @@ Built with **React** and **Vite** for a modern, responsive experience.
 - **Interactive Audio**: Sound effects for all interactions (click, hover, success, choice, insight, save)
 
 ### Core Gameplay
-- **3 Pre-built Scenarios**: Career change, relationship decision, relocation
+- **4 Pre-built Scenarios**: Career change, relationship decision, relocation, and epic medieval tale
 - **Custom Scenario Creator**: Define your own life crossroads
 - **Branching Paths**: Each decision leads to different outcomes
 - **Path History**: Track your journey step by step
@@ -54,23 +77,50 @@ Built with **React** and **Vite** for a modern, responsive experience.
 #### Audio Attribution
 All audio (BGM and SFX) is generated in real-time using the **Web Audio API**. No external audio files, samples, or licensed music is used. All audio is created programmatically and requires no external licensing or attribution.
 
-#### Audio Technical Details
-- **BGM Oscillator**: Sine wave at 65.41 Hz (C2 note)
-- **BGM LFO Modulation**: 0.5 Hz modulation for subtle variation
-- **SFX Waveforms**: Sine, triangle, and square waves
-- **Browser Support**: Works in all modern browsers with Web Audio API
-- **Performance**: Optimized audio nodes with proper cleanup
+## 🏗️ Project Structure
 
-### Insight Summary
-- **End-of-game Analysis**: Receive personalized insights based on your choices
-- **Pattern Recognition**: GLM identifies themes in your decision-making
-- **Exportable Summary**: Copy your insight to clipboard with one click
-
-### GLM (Guidance & Learning Model)
-Instead of using external AI, this game uses a built-in **Guidance & Learning Model**:
-- **Guidance**: Structured prompts that help players think deeply
-- **Learning**: Pattern recognition in player choices
-- **Modeling**: Outcome simulation based on decision trees
+```
+what-if/
+├── public/                 # Static assets
+├── src/
+│   ├── components/         # React components
+│   │   ├── MenuScreen.jsx
+│   │   ├── GameScreen.jsx
+│   │   ├── LoadScreen.jsx
+│   │   ├── CustomScenarioModal.jsx
+│   │   ├── SaveModal.jsx
+│   │   ├── Toast.jsx
+│   │   ├── LanguageSelector.jsx  # NEW: Language selector component
+│   │   └── ...other components
+│   ├── data/               # Game data
+│   │   ├── scenarios.js        # Pre-built scenario templates
+│   │   └── epicScenarios.js   # NEW: Epic scenario definitions
+│   ├── hooks/              # Custom React hooks
+│   │   └── useGameState.js # Game state management
+│   ├── i18n/               # NEW: Internationalization
+│   │   ├── translations.js     # UI translations for 7 languages
+│   │   ├── useTranslation.js  # React hook for i18n
+│   │   ├── languageDetection.js # Auto-detect language from text
+│   │   └── index.js          # Module exports
+│   ├── engine/             # NEW: Narrative engine
+│   │   ├── storyState.js     # State model (world, characters, factions)
+│   │   └── narrativeEngine.js # Branching, consequences, skill checks
+│   ├── utils/              # Utility functions
+│   │   └── glm.js         # Guidance & Learning Model
+│   ├── __tests__/          # Test files
+│   │   ├── setup.js
+│   │   ├── scenarios.test.js
+│   │   ├── glm.test.js
+│   │   └── useGameState.test.js
+│   ├── App.jsx             # Main application component
+│   ├── main.jsx            # React entry point with i18n provider
+│   └── index.css           # Global styles
+├── .prettierrc            # NEW: Prettier config
+├── .prettierignore        # NEW: Prettier ignore patterns
+├── index.html              # HTML template
+├── vite.config.js          # Vite configuration
+└── package.json            # Project dependencies
+```
 
 ## 🚀 Quick Start
 
@@ -93,177 +143,31 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## 🏗️ Project Structure
+## 🛠️ Build & Deploy
 
-```
-what-if/
-├── public/                 # Static assets
-├── src/
-│   ├── components/         # React components
-│   │   ├── MenuScreen.jsx
-│   │   ├── GameScreen.jsx
-│   │   ├── LoadScreen.jsx
-│   │   ├── CustomScenarioModal.jsx
-│   │   ├── SaveModal.jsx
-│   │   └── Toast.jsx
-│   ├── data/               # Game data
-│   │   └── scenarios.js    # Pre-built scenario templates
-│   ├── hooks/              # Custom React hooks
-│   │   └── useGameState.js # Game state management
-│   ├── utils/              # Utility functions
-│   │   └── glm.js         # Guidance & Learning Model
-│   ├── __tests__/          # Test files
-│   │   ├── setup.js
-│   │   ├── scenarios.test.js
-│   │   ├── glm.test.js
-│   │   └── useGameState.test.js
-│   ├── App.jsx             # Main application component
-│   ├── main.jsx            # React entry point
-│   └── index.css           # Global styles
-├── index.html              # HTML template
-├── vite.config.js          # Vite configuration
-└── package.json            # Project dependencies
+### Development
+```bash
+npm run dev
 ```
 
-## 📊 Architecture Diagram
-
-```mermaid
-graph TB
-    A[App Component] --> B[useGameState Hook]
-    B --> C[MenuScreen]
-    B --> D[GameScreen]
-    B --> E[LoadScreen]
-
-    C --> F[Scenario Selection]
-    F --> G[Pre-built Scenarios]
-    F --> H[Custom Scenario Modal]
-
-    D --> I[Narrative Display]
-    D --> J[Choice Buttons]
-    D --> K[Path History]
-    D --> L[Progress Bar]
-
-    G --> M[Scenarios Data]
-    H --> N[GLM Engine]
-
-    N --> O[generateOutcome]
-    N --> P[generateReflection]
-    N --> Q[generateDeepReflection]
-
-    B --> R[localStorage]
-    R --> S[Save/Load System]
-    R --> T[Auto-save]
-
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style N fill:#f3e5f5
-    style R fill:#e8f5e9
+### Production Build
+```bash
+npm run build
 ```
 
-## 🔄 Game Flow Diagram
+The optimized build will be in the `dist/` directory.
 
-```mermaid
-flowchart TD
-    Start([Start Game]) --> Menu[Main Menu]
-    Menu --> Select{Select Scenario}
-    Select --> PreBuilt[Pre-built Scenario]
-    Select --> Custom[Create Custom Scenario]
-
-    Custom --> FillForm[Fill Scenario Form]
-    FillForm --> GLMGenerate[GLM Generates Paths]
-
-    PreBuilt --> LoadScenario[Load Scenario Data]
-    GLMGenerate --> LoadScenario
-
-    LoadScenario --> GameScreen[Game Screen]
-    GameScreen --> DisplayNarrative[Display Narrative]
-    DisplayNarrative --> MakeChoice{Player Makes Choice}
-
-    MakeChoice --> RecordChoice[Record Choice]
-    RecordChoice --> AutoSave[Auto-save]
-    AutoSave --> HasNextNode{Has Next Node?}
-
-    HasNextNode -->|Yes| DisplayNarrative
-    HasNextNode -->|No| ShowInsight[Show Insight Summary]
-
-    ShowInsight --> Copy{Copy Insight?}
-    Copy -->|Yes| CopyClipboard[Copy to Clipboard]
-    Copy -->|No| NextAction{Next Action?}
-
-    NextAction -->|Play Again| Menu
-    NextAction -->|Save Game| SaveModal[Save Modal]
-    NextAction -->|Main Menu| Menu
-    NextAction -->|Load Game| LoadScreen[Load Screen]
-
-    SaveModal --> Save[Save to localStorage]
-    Save --> Menu
-
-    LoadScreen --> LoadGame[Load Game]
-    LoadGame --> GameScreen
-
-    style Start fill:#c8e6c9
-    style Menu fill:#bbdefb
-    style GameScreen fill:#fff9c4
-    style ShowInsight fill:#f8bbd9
-    style AutoSave fill:#d1c4e9
+### Preview Production Build
+```bash
+npm run preview
 ```
 
-## 🎨 Component Hierarchy
-
-```mermaid
-graph LR
-    App[App] --> AnimatedBackground[AnimatedBackground]
-    App --> AudioPlayer[AudioPlayer]
-    App --> MenuScreen[MenuScreen]
-    App --> GameScreen[GameScreen]
-    App --> LoadScreen[LoadScreen]
-
-    MenuScreen --> ScenarioCard[ScenarioCard]
-
-    GameScreen --> Narrative[Narrative]
-    GameScreen --> Choices[Choices]
-    GameScreen --> PathHistory[PathHistory]
-    GameScreen --> InsightSummary[InsightSummary]
-
-    App --> CustomScenarioModal[CustomScenarioModal]
-    App --> SaveModal[SaveModal]
-    App --> Toast[Toast]
-
-    App -.-> useGameState[useGameState Hook]
-    useGameState --> localStorage[localStorage API]
-
-    style App fill:#e3f2fd
-    style GameScreen fill:#fff3e0
-    style useGameState fill:#f3e5f5
-    style AnimatedBackground fill:#e1f5fe
-    style AudioPlayer fill:#fff8e1
-```
-
-## 🎨 Visual Effects & Animations
-
-### Background Effects
-- **Particle System**: 50 floating particles with smooth movement
-- **Gradient Animation**: Dynamic color gradient background
-- **Performance Optimized**: Canvas-based rendering at 60fps
-- **Responsive**: Adapts to any screen size
-
-### Screen Transitions
-- **Fade In/Out**: Smooth opacity transitions between screens
-- **Slide Effects**: Slide from left/right for directional flow
-- **Scale Animation**: Subtle zoom for modal appearances
-- **Staggered Reveals**: Elements appear sequentially
-
-### Micro-Interactions
-- **Hover Effects**: Scale, glow, and shadow on hover
-- **Click Feedback**: Ripple effect on buttons
-- **Choice Reveal**: Buttons animate in one by one
-- **Progress Animation**: Smooth progress bar with shimmer effect
-
-### Visual Polish
-- **Glassmorphism**: Frosted glass UI with backdrop blur
-- **Floating Icons**: Subtle animation on scenario icons
-- **Glow Effects**: Pulsing glow on key elements
-- **Gradient Buttons**: Modern gradient-filled buttons with shadows
+### Deployment
+You can deploy the `dist/` directory to any static hosting service:
+- **Vercel**: Automatic deployment on git push
+- **Netlify**: Drag and drop the dist/ folder
+- **GitHub Pages**: Deploy from the gh-pages branch
+- **Any static hosting**: Nginx, Apache, AWS S3, etc.
 
 ## 🧪 Testing
 
@@ -292,193 +196,193 @@ npm run test:coverage
 - **Game State Hook**: Test state management, save/load functionality
 - **Components**: Component rendering and user interactions
 
-## 🛠️ Build & Deploy
+## 🎨 Code Style
 
-### Development
-hi
+The project uses **Prettier** for code formatting and **ESLint** for linting.
 
-```bash
-npm run dev
-```
-
-### Production Build
+### Format Code
 
 ```bash
-npm run build
+# Format all source files
+npm run format
+
+# Check formatting without making changes
+npm run format:check
+
+# Lint code
+npm run lint
 ```
 
-The optimized build will be in the `dist/` directory.
+## 📊 Architecture
 
-### Preview Production Build
+### Multi-Language System
 
-```bash
-npm run preview
+```
+┌─────────────────────────────────────┐
+│         TranslationProvider         │
+│  (React Context + LocalStorage)    │
+└──────────────┬──────────────────┘
+               │
+               ├─► LanguageSelector
+               │
+               ├─► useTranslation()
+               │
+               └─► All Components
+                    (via t() function)
 ```
 
-### Deployment
+### Epic Story Engine
 
-You can deploy the `dist/` directory to any static hosting service:
-- **Vercel**: Automatic deployment on git push
-- **Netlify**: Drag and drop the dist/ folder
-- **GitHub Pages**: Deploy from the gh-pages branch
-- **Any static hosting**: Nginx, Apache, AWS S3, etc.
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Problem**: Port 5173 is already in use
-```bash
-# Solution: Use a different port
-npm run dev -- --port 3000
+```
+┌─────────────────────────────────────────┐
+│         NarrativeEngine              │
+│                                    │
+│  ┌────────────────────────────┐   │
+│  │     StoryState           │   │
+│  │                         │   │
+│  │  • Locations           │   │
+│  │  • Characters          │   │
+│  │  • Factions           │   │
+│  │  • Quests             │   │
+│  │  • Flags              │   │
+│  │  • Timeline           │   │
+│  │  • Inventory          │   │
+│  │  • Resources          │   │
+│  └────────────────────────────┘   │
+│                                    │
+│  ┌────────────────────────────┐   │
+│  │     Chapter             │   │
+│  │  ┌────────────────┐   │   │
+│  │  │   Scene       │   │   │
+│  │  │  ◄ Choices   │   │   │
+│  │  │  ◄ Conseq.  │   │   │
+│  │  │  ◄ Conditions │   │   │
+│  │  │  ◄ Skill Chk │   │   │
+│  │  └────────────────┘   │   │
+│  └────────────────────────────┘   │
+└─────────────────────────────────────────┘
 ```
 
-**Problem**: Tests fail with "localStorage is not defined"
-```bash
-# Solution: Vitest should handle this with jsdom environment
-# If issues persist, check vite.config.js has:
-# test: {
-#   environment: 'jsdom'
-# }
-```
+## 🎮 Game Modes
 
-**Problem**: Build fails with out-of-memory error
-```bash
-# Solution: Increase Node.js memory limit
-NODE_OPTIONS="--max-old-space-size=4096" npm run build
-```
+### Standard Mode
+- 3 classic life crossroads scenarios
+- 2-3 levels of branching
+- Focus on single decisions
+- Quick, reflective gameplay (5-10 minutes)
 
-**Problem**: Styles don't load correctly
-```bash
-# Solution: Ensure index.css is imported in main.jsx
-# Check that CSS variables are defined in :root
-```
+### Epic Mode
+- 1 deep epic scenario
+- 8+ levels of branching
+- Complex state tracking
+- Multiple endings and consequences
+- Longer, immersive gameplay (20-40 minutes)
 
-**Problem**: Saved games don't persist
-```bash
-# Solution: Check browser settings
-# Some browsers block localStorage in private/incognito mode
-# Try in normal browsing mode
-```
+## 🌐 Supported Languages
 
-### Development Tools
-
-- **React DevTools**: Install browser extension for component inspection
-- **Vite DevTools**: Press `o` to open in browser, `c` to clear console
-- **Source Maps**: Enabled by default in development for debugging
-
-## ⚡ Performance
-
-### Optimizations
-- **Canvas Rendering**: Particle effects rendered at 60fps with requestAnimationFrame
-- **CSS Transforms**: Hardware-accelerated animations using transform and opacity
-- **Lazy Animations**: Animations triggered on viewport entry
-- **Debounced Audio**: Efficient audio processing with proper cleanup
-- **Memory Management**: Proper cleanup of event listeners and timers
-
-### Browser Compatibility
-- **Chrome/Edge**: Full support
-- **Firefox**: Full support
-- **Safari**: Full support
-- **Mobile**: Optimized for touch and mobile viewports
-
-### Performance Metrics
-- **Initial Load**: < 100ms
-- **Time to Interactive**: < 1s
-- **Frame Rate**: Consistent 60fps
-- **Bundle Size**: ~230KB (gzipped: ~75KB)
+| Language | Code | Flag | Coverage |
+|-----------|-------|-------|----------|
+| English | en | 🇬🇧 | 100% |
+| Spanish | es | 🇪🇸 | 100% |
+| French | fr | 🇫🇷 | 100% |
+| German | de | 🇩🇪 | 100% |
+| Chinese | zh | 🇨🇳 | 100% |
+| Japanese | ja | 🇯🇵 | 100% |
+| Portuguese | pt | 🇧🇷 | 100% |
 
 ## 📝 API Reference
 
-```javascript
-const {
-  currentScreen,      // Current active screen
-  currentScenario,    // Current scenario ID
-  currentNode,        // Current node in scenario tree
-  pathHistory,        // Array of choices made
-  progress,           // Current progress (0-3)
-  insight,            // Final insight text
-  isComplete,         // Whether scenario is complete
-  savedGames,         // Array of saved games
-
-  selectScenario,     // Function to select a scenario
-  makeChoice,         // Function to make a choice
-  resetGame,          // Function to reset game state
-  saveGame,           // Function to save game
-  loadGame,           // Function to load game
-  deleteGame,         // Function to delete saved game
-  copyInsight         // Function to copy insight to clipboard
-} = useGameState();
-```
-
-### GLM Functions
+### Translation Hook
 
 ```javascript
-// Generate an outcome for a choice
-const outcome = generateOutcome('Take the risky path');
+const { t, language, changeLanguage, autoDetect, enableAutoDetect } = useTranslation();
 
-// Generate a reflection
-const reflection = generateReflection(choice, question);
+// Translate a key
+t('app.title') // "🌟 What-If Game"
 
-// Generate a deep reflection
-const deepReflection = generateDeepReflection(choice, question);
+// Change language
+changeLanguage('es') // Switch to Spanish
 
-// Create a custom scenario
-const scenario = createCustomScenario(title, question, options);
+// Enable auto-detection
+enableAutoDetect() // Auto-detect from user input
+
+// Translate with parameters
+t('game.complete', { scenario: 'The King's Destiny' })
 ```
 
-## 🎯 Game Mechanics
-
-### The GLM Model
-
-The game uses a built-in **Guidance & Learning Model** instead of external AI:
-
-1. **Guidance**: Structured narrative prompts guide players through decisions
-2. **Learning**: Pattern recognition identifies themes in player choices
-3. **Modeling**: Branching outcomes simulate different life paths
-
-### Scenario Structure
-
-Each scenario follows a tree structure:
+### Story State Model
 
 ```javascript
-{
-  id: 'career',
-  title: 'The Career Crossroads',
-  description: '...',
-  icon: '💼',
-  color: '#3498db',
-  start: {
-    text: 'Opening narrative...',
-    choices: [
-      {
-        text: 'Choice A',
-        outcome: 'outcome_id',
-        next: {
-          text: 'Narrative after choice...',
-          choices: [
-            {
-              text: 'Sub-choice',
-              outcome: 'sub_outcome',
-              reflection: 'Final insight text...'
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+import { StoryState, Location, Character, Faction, Quest } from './engine/storyState';
+
+const state = new StoryState();
+
+// Add world elements
+state.addLocation(new Location('castle', 'Royal Castle', 'The seat of power'));
+state.addCharacter(new Character('king', 'King Aldric', 'The aging ruler'));
+state.addFaction(new Faction('royalty', 'Royal Court', 'The ruling class'));
+
+// Track quests
+state.addQuest(new Quest('main_discovery', 'Uncover the Truth', 'main'));
+state.startQuest('main_discovery');
+
+// Manage flags
+state.setFlag('met_king', true);
+state.unlockBranch('secret_path');
+
+// Record history
+state.recordChoice('choice_1', 'Accepted the offer', { reputation: 10 });
 ```
+
+## 🎯 Epic Scenario: "The King's Destiny"
+
+### Story Arc
+
+1. **Chapter 1: The Letter** - The revelation of your true heritage
+2. **Chapter 2: Revelation** - Meeting the King and learning the truth
+3. **Chapter 3: Crossroads** - Choosing your path (rule, rebel, negotiate)
+4. **Chapter 4: Alliance** - Building relationships and factions
+5. **Chapter 5: Conflict** - The rebellion begins
+6. **Chapter 6: Decision** - Making hard choices
+7. **Chapter 7: Consequence** - Living with your decisions
+8. **Chapter 8: Resolution** - The endings
+
+### Key Mechanics
+
+- **Character Relationships**: Your choices affect how NPCs view you
+- **Faction Standing**: Support different factions and see consequences
+- **Resource Management**: Balance gold, health, mana, influence
+- **Quest System**: Track main and side quests
+- **Flag System**: Unlock paths based on previous choices
+- **Skill Checks**: Optional dice rolls for difficult decisions
+
+### Endings
+
+- **Peaceful Reign** - Diplomatic victory through alliances
+- **Militant Victory** - Military victory at great cost
+- **Compromise** - Middle path with mixed results
+- **Sacrifice** - Giving up power for the greater good
+- **Tragedy** - Poor choices lead to disaster
+- ...and more!
 
 ## 🤝 Contributing
 
 Contributions are welcome! To add a new scenario:
 
-1. Add the scenario to `src/data/scenarios.js`
+1. Add the scenario to `src/data/scenarios.js` or create an epic scenario in `src/data/epicScenarios.js`
 2. Follow the existing scenario structure
-3. Include at least 2-3 levels of branching
-4. Add meaningful reflections at endpoints
-5. Test the scenario in the game
+3. Include branching choices and meaningful reflections
+4. Test the scenario in the game
+5. Add translations to `src/i18n/translations.js`
+
+### Adding Translations
+
+To add support for a new language:
+
+1. Add the language code to `supportedLanguages` in `src/i18n/translations.js`
+2. Add translation keys for all UI strings
+3. Add language detection patterns in `src/i18n/languageDetection.js`
+4. Test the implementation
 
 ### Code Style
 
@@ -486,6 +390,7 @@ Contributions are welcome! To add a new scenario:
 - Follow React best practices
 - Include PropTypes or TypeScript (if adding)
 - Write tests for new features
+- Format code with Prettier before committing
 - Update documentation as needed
 
 ## 📄 License
@@ -497,7 +402,11 @@ MIT License - feel free to use and modify for personal or commercial projects.
 - Inspired by the idea that we all wonder "what if" about life's choices
 - Built with modern web technologies for accessibility and performance
 - Designed to encourage reflection on living in the present moment
+- Multi-language support powered by a custom detection algorithm
+- Epic storytelling engine inspired by classic RPG narrative systems
 
 ---
 
 **Remember**: The game's purpose is exploration, not prediction. Whatever paths you imagine, the only reality is the present moment. 💫
+
+**Version 2.0**: Epic mode, multi-language support, and deep narrative engine.

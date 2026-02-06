@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export function Confetti({ trigger }) {
   const canvasRef = useRef(null);
@@ -9,7 +9,7 @@ export function Confetti({ trigger }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     let width, height;
 
     const resize = () => {
@@ -18,9 +18,9 @@ export function Confetti({ trigger }) {
     };
 
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
-    const colors = ['#3498db', '#e74c3c', '#27ae60', '#9b59b6', '#f39c12', '#1abc9c'];
+    const colors = ["#3498db", "#e74c3c", "#27ae60", "#9b59b6", "#f39c12", "#1abc9c"];
 
     class ConfettiPiece {
       constructor(x, y) {
@@ -46,7 +46,7 @@ export function Confetti({ trigger }) {
       draw() {
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.rotate((this.rotation * Math.PI) / 180);
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.opacity;
         ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
@@ -77,7 +77,7 @@ export function Confetti({ trigger }) {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener("resize", resize);
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -89,13 +89,13 @@ export function Confetti({ trigger }) {
       ref={canvasRef}
       className="confetti-canvas"
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         zIndex: 2000,
-        pointerEvents: 'none'
+        pointerEvents: "none",
       }}
     />
   );
